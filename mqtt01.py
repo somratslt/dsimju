@@ -9,18 +9,11 @@ r = 11
 g = 13
 b = 15
 
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(r, GPIO.OUT)
 GPIO.setup(g, GPIO.OUT)
 GPIO.setup(b, GPIO.OUT)
-GPIO.setwarnings(False)
-
-try:
-    rgbmqtt()
-    
-except KeyboardInterrupt:
-    print("\nExiting program.")
-GPIO.cleanup()
 
 def rgbmqtt() :
     num = int(input("RANGE FOR LOOP : "))  # จำนวนรอบที่ต้องการวงลูป
@@ -33,8 +26,8 @@ def rgbmqtt() :
                 
         if color == int(1):
             client = mqtt.Client()
-            client.connect(host)
-            client.publish("dsimju/rgb","LED is RED")
+            client.connect(host) #
+            client.publish("dsimju/rgb","LED is RED") # แสดงข้อความไปยัง MQTT Topic dsimju/rgb
             print("LED is RED\n")
             GPIO.output(r, 0)  # Turn LED ON
             GPIO.output(g, 1)
@@ -111,5 +104,13 @@ def rgbmqtt() :
             break
         else:
             print("ERROR: Invalid color\n")
+
+try:
+    rgbmqtt()
+    
+except KeyboardInterrupt:
+    print("\nExiting program.")
+GPIO.cleanup()
+
 
     
